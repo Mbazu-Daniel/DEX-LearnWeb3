@@ -1,20 +1,20 @@
-import { BigNumber, providers, utils } from "ethers";
+import { BigNumber, providers, utils, ethers } from "ethers";
 import Head from "next/head";
 import React, { useEffect, useRef, useState } from "react";
 import Web3Modal from "web3modal";
 import styles from "../styles/Home.module.css";
-import { addLiquidity, calculateCD } from "../utils/addLiquidity";
+import { addLiquidity, calculateCD } from "../utils/addLiquidity.js";
 import {
   getCDTokensBalance,
   getEtherBalance,
   getLPTokensBalance,
   getReserveOfCDTokens,
-} from "../utils/getAmounts";
+} from "../utils/getAmounts.js";
 import {
   getTokensAfterRemove,
   removeLiquidity,
-} from "../utils/removeLiquidity";
-import { swapTokens, getAmountOfTokensReceivedFromSwap } from "../utils/swap";
+} from "../utils/removeLiquidity.js";
+import { swapTokens, getAmountOfTokensReceivedFromSwap } from "../utils/swap.js";
 
 export default function Home() {
   /** General state variables */
@@ -56,9 +56,8 @@ export default function Home() {
   // Amount that the user wants to swap
   const [swapAmount, setSwapAmount] = useState("");
   // This keeps track of the number of tokens that the user would receive after a swap completes
-  const [tokenToBeReceivedAfterSwap, settokenToBeReceivedAfterSwap] = useState(
-    zero
-  );
+  const [tokenToBeReceivedAfterSwap, settokenToBeReceivedAfterSwap] =
+    useState(zero);
   // Keeps track of whether  `Eth` or `Crypto Dev` token is selected. If `Eth` is selected it means that the user
   // wants to swap some `Eth` for some `Crypto Dev` tokens and vice versa if `Eth` is not selected
   const [ethSelected, setEthSelected] = useState(true);
@@ -132,7 +131,7 @@ export default function Home() {
   };
 
   /**
-   * _getAmountOfTokensReceivedFromSwap:  Returns the number of Eth/Crypto Dev tokens that can be received 
+   * _getAmountOfTokensReceivedFromSwap:  Returns the number of Eth/Crypto Dev tokens that can be received
    * when the user swaps `_swapAmountWEI` amount of Eth/Crypto Dev tokens.
    */
   const _getAmountOfTokensReceivedFromSwap = async (_swapAmount) => {
@@ -286,7 +285,7 @@ export default function Home() {
    * @param {*} needSigner - True if you need the signer, default false
    * otherwise
    */
-  const getProviderOrSigner = async (needSigner = false) => {
+   const getProviderOrSigner = async (needSigner = false) => {
     // Connect to Metamask
     // Since we store `web3Modal` as a reference, we need to access the `current` value to get access to the underlying object
     const provider = await web3ModalRef.current.connect();
@@ -294,7 +293,7 @@ export default function Home() {
 
     // If user is not connected to the Rinkeby network, let them know and throw an error
     const { chainId } = await web3Provider.getNetwork();
-    if (chainId !== 4) {
+    if (chainId !== 5) {
       window.alert("Change the network to Rinkeby");
       throw new Error("Change network to Rinkeby");
     }
@@ -315,7 +314,7 @@ export default function Home() {
       // Assign the Web3Modal class to the reference object by setting it's `current` value
       // The `current` value is persisted throughout as long as this page is open
       web3ModalRef.current = new Web3Modal({
-        network: "rinkeby",
+        network: "goerli",
         providerOptions: {},
         disableInjectedProvider: false,
       });
@@ -359,7 +358,7 @@ export default function Home() {
             {/* If reserved CD is zero, render the state for liquidity zero where we ask the user
             how much initial liquidity he wants to add else just render the state where liquidity is not zero and
             we calculate based on the `Eth` amount specified by the user how much `CD` tokens can be added */}
-            {utils.parseEther(reservedCD.toString()).eq(zero) ? (
+            {utils.parseEther(reservedCD.toString()).eq(zero) || "0" ? (
               <div>
                 <input
                   type="number"
@@ -514,7 +513,7 @@ export default function Home() {
           {renderButton()}
         </div>
         <div>
-          <img className={styles.image} src="./crypto-devs.svg" />
+          <img className={styles.image} src="./cryptodev.svg" />
         </div>
       </div>
 

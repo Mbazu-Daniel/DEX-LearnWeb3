@@ -1,11 +1,11 @@
-import { Contract } from "ethers";
+
 import {
   EXCHANGE_CONTRACT_ABI,
   EXCHANGE_CONTRACT_ADDRESS,
   TOKEN_CONTRACT_ABI,
   TOKEN_CONTRACT_ADDRESS,
-} from "../constants";
-
+} from "../constants/index.js";
+import { Contract } from "ethers";
 /**
  * getEtherBalance: Retrieves the ether balance of the user or the contract
  */
@@ -31,7 +31,6 @@ export const getEtherBalance = async (provider, address, contract = false) => {
  * getCDTokensBalance: Retrieves the Crypto Dev tokens in the account
  * of the provided `address`
  */
-
 export const getCDTokensBalance = async (provider, address) => {
   try {
     const tokenContract = new Contract(
@@ -68,15 +67,14 @@ export const getLPTokensBalance = async (provider, address) => {
  * getReserveOfCDTokens: Retrieves the amount of CD tokens in the
  * exchange contract address
  */
-
-export const getReserveOfCDTokens = async (provider, address) => {
+export const getReserveOfCDTokens = async (provider) => {
   try {
     const exchangeContract = new Contract(
       EXCHANGE_CONTRACT_ADDRESS,
       EXCHANGE_CONTRACT_ABI,
       provider
     );
-    const reserve = await exchangeContract.balanceOf(address);
+    const reserve = await exchangeContract.getReserve();
     return reserve;
   } catch (err) {
     console.error(err);

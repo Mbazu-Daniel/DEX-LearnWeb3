@@ -23,7 +23,7 @@ async function main() {
     "Exchange Contract Address:",
     deployedExchangeContract.address
   );
-  console.log(`https://rinkeby.etherscan.io/address/${deployedExchangeContract.address}`);
+ 
 }
 
 // Call the main function and catch if there is any error

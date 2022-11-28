@@ -1,10 +1,10 @@
-import { Contract } from "ethers";
+import { Contract, utils } from "ethers";
 import {
   EXCHANGE_CONTRACT_ABI,
   EXCHANGE_CONTRACT_ADDRESS,
   TOKEN_CONTRACT_ABI,
   TOKEN_CONTRACT_ADDRESS,
-} from "../constants";
+} from "../constants/index.js";
 
 /**
  * addLiquidity helps add liquidity to the exchange,
@@ -32,14 +32,12 @@ export const addLiquidity = async (
       EXCHANGE_CONTRACT_ABI,
       signer
     );
-
     // Because CD tokens are an ERC20, user would need to give the contract allowance
     // to take the required number CD tokens out of his contract
     let tx = await tokenContract.approve(
       EXCHANGE_CONTRACT_ADDRESS,
       addCDAmountWei.toString()
     );
-
     await tx.wait();
     // After the contract has the approval, add the ether and cd tokens in the liquidity
     tx = await exchangeContract.addLiquidity(addCDAmountWei, {
@@ -63,6 +61,7 @@ export const calculateCD = async (
   // `_addEther` is a string, we need to convert it to a Bignumber before we can do our calculations
   // We do that using the `parseEther` function from `ethers.js`
   const _addEtherAmountWei = utils.parseEther(_addEther);
+
   // Ratio needs to be maintained when we add liquidty.
   // We need to let the user know for a specific amount of ether how many `CD` tokens
   // He can add so that the price impact is not large

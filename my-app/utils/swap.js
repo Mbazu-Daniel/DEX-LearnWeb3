@@ -4,13 +4,12 @@ import {
   EXCHANGE_CONTRACT_ADDRESS,
   TOKEN_CONTRACT_ABI,
   TOKEN_CONTRACT_ADDRESS,
-} from "../constants";
+} from "../constants/index.js";
 
 /*
     getAmountOfTokensReceivedFromSwap:  Returns the number of Eth/Crypto Dev tokens that can be received 
     when the user swaps `_swapAmountWei` amount of Eth/Crypto Dev tokens.
 */
-
 export const getAmountOfTokensReceivedFromSwap = async (
   _swapAmountWei,
   provider,
@@ -32,7 +31,7 @@ export const getAmountOfTokensReceivedFromSwap = async (
     amountOfTokens = await exchangeContract.getAmountOfTokens(
       _swapAmountWei,
       ethBalance,
-      reservedCd
+      reservedCD
     );
   } else {
     // If `Eth` is not selected this means our input value is `Crypto Dev` tokens which means our input amount would be
@@ -44,13 +43,13 @@ export const getAmountOfTokensReceivedFromSwap = async (
       ethBalance
     );
   }
+
   return amountOfTokens;
 };
 
 /*
   swapTokens: Swaps `swapAmountWei` of Eth/Crypto Dev tokens with `tokenToBeReceivedAfterSwap` amount of Eth/Crypto Dev tokens.
 */
-
 export const swapTokens = async (
   signer,
   swapAmountWei,
@@ -63,13 +62,11 @@ export const swapTokens = async (
     EXCHANGE_CONTRACT_ABI,
     signer
   );
-
   const tokenContract = new Contract(
     TOKEN_CONTRACT_ADDRESS,
     TOKEN_CONTRACT_ABI,
     signer
   );
-
   let tx;
   // If Eth is selected call the `ethToCryptoDevToken` function else
   // call the `cryptoDevTokenToEth` function from the contract
@@ -78,7 +75,9 @@ export const swapTokens = async (
   if (ethSelected) {
     tx = await exchangeContract.ethToCryptoDevToken(
       tokenToBeReceivedAfterSwap,
-      { value: swapAmountWei }
+      {
+        value: swapAmountWei,
+      }
     );
   } else {
     // User has to approve `swapAmountWei` for the contract because `Crypto Dev` token

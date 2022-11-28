@@ -1,5 +1,5 @@
-export const TOKEN_CONTRACT_ABI  = '0x60F577946cDCD0d871819895aE135C9034f1ED84';
-export const TOKEN_CONTRACT_ADDRESS= [
+export const TOKEN_CONTRACT_ADDRESS = "0xA8e171e5c8Ec8E8B4b52C34A66DAB97314bf27D5"
+export const TOKEN_CONTRACT_ABI = [
   {
     "inputs": [
       {
@@ -594,7 +594,7 @@ export const EXCHANGE_CONTRACT_ABI = [
         "type": "uint256"
       }
     ],
-    "name": "crytoDevTokenToEth",
+    "name": "cryptoDevTokenToEth",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -634,6 +634,19 @@ export const EXCHANGE_CONTRACT_ABI = [
       }
     ],
     "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_minTokens",
+        "type": "uint256"
+      }
+    ],
+    "name": "ethToCryptoDevToken",
+    "outputs": [],
+    "stateMutability": "payable",
     "type": "function"
   },
   {
@@ -819,4 +832,5 @@ export const EXCHANGE_CONTRACT_ABI = [
     "type": "function"
   }
 ]
-export const EXCHANGE_CONTRACT_ADDRESS = "0x231b23Da36781022A6fa941de7d222bb7D3d90Ab"
+
+export const EXCHANGE_CONTRACT_ADDRESS ="0xF6b59aCaAC6Df730A722Fceb9Be798e5B3aEeb3d"
